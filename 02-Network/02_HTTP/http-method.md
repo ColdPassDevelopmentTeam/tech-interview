@@ -31,6 +31,28 @@
   - GET 요청 시 사용자 입력이 URI에 노출될 수 있기에 민감한 데이터는 적합하지 않음
   - 이 경우 캐싱 이점이 필요 없으면 POST 사용이 더 안전함
 
+### GET의 정적 데이터 조회 과정
+
+<img src="./img/http-method/get1.png" width=600px>
+
+- 클라이언트에서 서버로 데이터 조회를 위한 GET 메서드를 호출함
+
+<img src="./img/http-method/get2.png" width=600px>
+
+- 요청이 정상적이라면 서버에서는 적절한 응답 결과를 생성해 클라이언트로 전송함
+
+### GET의 동적 데이터 조회 과정
+
+<img src="./img/http-method/get3.png" width=600px>
+
+- 클라이언트에서 Query parameter 동적 데이터에 대한 요청을 서버로 전달하면 서버는 이에 맞게 parameter 기반으로 정렬을 통해 응답 데이터를 생성해 클라이언트로 보내줌
+
+### GET의 HTML Form 데이터 조회 과정
+
+<img src="./img/http-method/get4.png" width=600px>
+
+- HTML Form을 이용해 조회할 데이터를 정해서 서버로 요청을 보낼 수 있음
+
 ## HEAD
 
 - 기본 역할
@@ -65,6 +87,20 @@
   - POST 요청에 대한 응답은 일반적으로 캐시되지 않음
   - `Content-Location`과 명시적 캐시 유효성 정보가 있으며 캐시 가능
 
+### POST의 JSON 데이터 전송
+
+<img src="./img/http-method/post1.png" width=600px>
+
+- 클라이언트가 JSON 형식으로 데이터를 바디에 담은 후 요청을 보냄
+
+<img src="./img/http-method/post2.png" width=600px>
+
+- 서버 리소스에 클라이언트 요청 데이터를 적재함
+
+<img src="./img/http-method/post3.png" width=600px>
+
+- 업데이트된 리소스 결과에 대한 데이터를 응답 메시지 바디에 담아서 클라이언트 측으로 전송함
+
 ## PUT
 
 - 기본 역할
@@ -77,7 +113,7 @@
   - PUT : 클라이언트가 리소스를 정의함
     - 클라이언트가 대상 리소스의 URI를 정확히 알고 있음
     - 해당 URI의 리소스 상태를 완전히 대체하려는 의도를 가짐
-- Idempotent
+- 멱등성 (Idempotent)
   - 동일한 PUT 요청을 여러 번 보내도 서버의 리소스 상태는 동일하게 유지됨
 - 응답 상태 코드
   - 새로운 리소스 생성 성공 : `201 (Created)`
@@ -90,10 +126,30 @@
 - 부분 PUT
   - `Content-Range` 헤더를 사용하여 리소스의 일부만 수정하는 가능
 
+### PUT 요청에 대해 기존 리소스가 존재하는 경우
+
+<img src="./img/http-method/put1.png" width=600px>
+
+- 아래와 같은 경로에 존재하는 리소스를 대체하는 요청을 서버로 전송함
+
+<img src="./img/http-method/put2.png" width=600px>
+
+- 기존 데이터가 존재한다면 요청 당시 바디에 있던 데이터로 완전히 대체됨
+
+### PUT 요청에 대해 기존 리소스가 존재하지 않는 경우
+
+<img src="./img/http-method/put3.png" width=600px>
+
+- 업데이트된 리소스 결과에 대한 데이터를 응답 메시지 바디에 담아서 클라이언트 측으로 전송함
+
+<img src="./img/http-method/put4.png" width=600px>
+
+- 기존 데이터가 없었기 때문에 요청 데이터를 기반으로 새로운 리소스가 생성됨
+
 ## PATCH
 
 - 역할
-  - Put : 요청 본문의 내용으로 리소스 전체를 완전히 교체
+  - PUT : 요청 본문의 내용으로 리소스 전체를 완전히 교체
   - PATCH : 제공된 지침에 따라 리소스의 일부만 수정
 - 안전성 및 멱등성
   - PATCH는 안전하지도 않고 멱등성을 보장하지도 않음
@@ -115,6 +171,16 @@
   - 패치 문서의 크기가 PUT으로 보낼 전체 리소스 데이터보다 크다면 PUT이 더 효율적
   - 예측 불가능한 방식으로 리소스를 수정하는 경우에는 POST 고려
 
+### 리소스의 일부를 변경하고자 하는 경우
+
+<img src="./img/http-method/patch1.png" width=600px>
+
+- age 값을 수정하고자 할 때 PATCH 메서드를 사용함
+
+<img src="./img/http-method/patch2.png" width=600px>
+
+- age 필드 데이터만 변경된 것을 확인할 수 있음
+
 ## DELETE
 
 - 기본 역할
@@ -133,6 +199,16 @@
 - 캐싱
   - DELETE에 대한 응답은 캐시되지 않음
   - 성공 시 해당 URI에 대한 모든 기존 응답을 무효화함
+
+### 특정 자원의 리소스를 삭제하고자 하는 경우
+
+<img src="./img/http-method/delete1.png" width=600px>
+
+- 특정 경로의 리소스를 삭제할 수 있음
+
+<img src="./img/http-method/delete2.png" width=600px>
+
+- 서버의 요청을 받고 데이터베이스의 해당 리소스를 제거함
 
 ## CONNECT
 
@@ -188,6 +264,10 @@
   - 클라이언트는 TRACE 요청에 본문을 보내서는 안됨
 - 캐싱
   - TRACE에 대한 응답은 캐시되지 않음
+
+## 요약
+
+<img src="./img/http-method/all-method.png">
 
 ## 출처
 
