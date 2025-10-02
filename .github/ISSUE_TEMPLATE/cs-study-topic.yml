@@ -1,0 +1,46 @@
+name: "CS 스터디 주제 발표"
+about: "CS 스터디 발표 주제를 등록하고 관리합니다."
+title: "[분야] - [세부 주제]"
+labels: ["스터디 주제", "상태: 조사중"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        CS 스터디 발표 주제를 등록하고 진행 상황을 관리하기 위한 템플릿입니다.
+        아래 항목을 채워주세요.
+
+  - type: input
+    id: topic
+    attributes:
+      label: "📚 주제 (Topic)"
+      description: "발표할 CS 주제를 간결하게 작성해주세요. 예: B+Tree와 인덱스 동작 원리"
+    validations:
+      required: true
+
+  - type: input
+    id: presenter
+    attributes:
+      label: "🧑‍💻 발표자 (Presenter)"
+      description: "발표자의 GitHub 아이디를 입력해주세요. 예: @github_id"
+    validations:
+      required: true
+
+  - type: input
+    id: date
+    attributes:
+      label: "🗓️ 발표 예정일 (Presentation Date)"
+      description: "발표 예정 날짜를 입력해주세요. 예: 2025-10-09"
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: "🎯 학습 목표 및 범위 (Learning Goals & Scope)"
+      description: "이번 발표에서 다룰 핵심 내용과 범위를 목록으로 작성해주세요."
+      placeholder: |
+        - B-Tree와 B+Tree의 차이점 이해
+        - InnoDB에서 B+Tree 인덱스가 동작하는 방식
+        - 클러스터형 인덱스와 비클러스터형 인덱스의 탐색 과정 비교
+    validations:
+      required: true
