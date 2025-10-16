@@ -378,6 +378,6 @@ TLS 프로토콜 스택
     - HTTP/2는 강력한 성능 향상 기능을 제공
         - 하나의 TCP 연결에서 여러 요청/응답을 동시에 처리하는 다중화(Multiplexing)
         - 헤더 중복을 제거하는 헤더 압축(Header Compression) 등
-    - TLS handshake에서 발생하는 약간의 지연 HTTP/2가 제공하는 엄청난 속도 향상으로 인해 상쇄됨
+    - TLS handshake에서 발생하는 약간의 지연은 HTTP/2가 제공하는 엄청난 속도 향상으로 인해 상쇄됨
 
 ![image7.png](./img/image7.png)
