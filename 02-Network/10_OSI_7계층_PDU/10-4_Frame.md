@@ -65,7 +65,7 @@ TCP/IP 네트워크에서 사실상의 표준으로 사용되는 **이더넷 II(
 위의 그림이 각각
 
 - IEEE 802.3 (표준 프레임)
-- DIX 2.0 (Ethernet **II)**
+- DIX 2.0 (Ethernet II)
 
 <br>
 
