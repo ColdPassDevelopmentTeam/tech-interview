@@ -34,7 +34,7 @@
 
 # **3. 위치에 따른 분류**
 ## 3.1 Forward Proxy(정방향 프록시)
-![Forward Proxy](./src/foward-proxy.png)
+![Forward Proxy](./src/forward-proxy.png)
 클라이언트와 인터넷 사이에 위치해 **클라이언트를 대신**해 인터넷 서버와 통신하는 서버입니다.
 
 ### 3.1.1 주요 기능
