@@ -102,12 +102,12 @@ Oauth의 동작을 이해하기 위해서는 4가지 주요 주체를 알아야 
 - 또한 서버도 저희 서버가 아니라, Resource Server와 Authorization Server를 의미합니다.  
 
 
-이해하기 어렵다면 다음과 같이 생각해도 됩니다.
+이해하기 어렵다면 다음과 같이 생각해도 됩니다. (이하 설명에서도 사용)
 | 구성요소 | 설명 |
 |-----------|------|
 | **Resource Owner** | 사용자 |
 | **Client** | 내 서비스 |
-| **Server** | 구글(권한을 위임받을 외부 서비스 이름) |
+| (두 서버 합쳐서)**Server** | 구글(권한을 위임받을 외부 서비스 이름) |
 
 
 참고로 이전 버전인 OAuth 1.0에서는 Resource Server와 Authorization Server를 구분하지 않고 하나의 서버로 다뤘습니다.
@@ -117,128 +117,152 @@ Oauth의 동작을 이해하기 위해서는 4가지 주요 주체를 알아야 
 
 ---
 
-## OAuth 구조 개요
+## OAuth의 3단계 흐름
 
+![oauth 3단계](src/image.png)
 
-### 전체 흐름
-1. **사용자 요청 (Resource Owner)**  
-   → 서비스 접근 및 인증 요청  
-2. **검증 및 토큰 발급 (Authorization Server)**  
-   → 로그인 및 동의 후 Access Token 발급  
-3. **자원 접근 (Resource Server)**  
-   → 클라이언트가 Access Token으로 API 호출  
+전체 단계을 보기전에 큰 흐름을 봅시다. 우선 이걸 한번에 다 이해하려고 하지 말고,  
+우리는 서버 개발자이므로 서버입장에서 생각해봅시다
 
-> “인증 → 토큰 발급 → 자원 접근”의 3단계 구조로 작동한다.
+최종적으로 우리 서버가 구글에 접근하여 우리 사용자의 데이터를 가져오는 것이 목표입니다.  
+**이를 위해서 Access Token을 발급받아야 합니다.**
+
+그리고 구글에서 Access Token을 발급받기 위해서는 사용자의 인증과 동의가 필요합니다.  
+**이를 위해서 사용자로부터 Code라는 것을 받아와야 합니다.**
+
+그렇다면 남은 것은 사용자가 어떻게 인증하고 동의하는가 입니다. 뒤에서 설명하겠습니다.
+
 
 ---
 
 ## OAuth 사전작업
 
-![OAuth 사전작업](src/7.png)
 
 ### 사전 등록 단계
-- Authorization Server에 **URL 및 callback 주소 등록**
-- 등록 후 **client_id**, **client_secret** 발급
+그전에 잠시 우리 서비스에서 OAuth를 사용하기 위한 사전 작업이 필요합니다.
+![OAuth 사전작업](src/8.png)
+우리 서비스에서 구글에 접근하려면 당연히 구글도 우리 서비스를 알아야 합니다.  
+따라서 구글(위 사진은 깃허브)에 미리 등록을 해야합니다. 대부분 위 사진같은 화면이 제공됩니다.
+- 우리 서비스의 URL 등록
+- 사용자가 코드를 발급받고 우리 서비스로 돌아갈 때의 callback 주소 등록
 
----
 
-## OAuth 사전작업 (2)
+등록이 완료되면 client_id와 client_secret 이 발급됩니다.
 
-![OAuth 사전작업 (2)](src/8.png)
 
-### 예시 URL
-https://github.com/login/oauth/authorize?  
-client_id=Ov23Ijjp8hMwghEcds1D  
+- Client ID  
+어플리케이션(서비스)을 식별하는 식별자ID를 의미합니다  
+우리 서비스말고도 다양한 서비스가 등록했을 것입니다, 구글 입장에서 어떤 서비스에게 제공할지 구분하는 ID가 필요할 것입니다.
+- Client Secret  
+Client ID에 대한 비밀번호로 외부에 노출되면 안됩니다.
+
+## 예시URL
+![OAuth 흐름 (1)](src/9.png)
+URL로 https://localhost:8080/callback   
+redirect URL로 https://localhost:8080/callback 을 등록했다고 가정하겠습니다.
+
+그렇다면 우리가 사용자에게 제공할 URL이 나옵니다(url예시는 깃허브입니다).  
+>https://github.com/login/oauth/authorize   
+?client_id=Ov23Ijjp8hMwghEcds1D  
 &redirect_uri=https://localhost:8080/callback
 
-- `client_id` : 애플리케이션 식별자  
-- `redirect_uri` : 인증 후 돌아올 콜백 주소  
+즉 사용자는 이 URL로 접속하여 로그인을 하고, 권한을 동의하면  
+사용자는 redirect_uri로 등록된 주소로 Code를 받고 돌아오게 됩니다. 
 
 ---
 
-## OAuth 흐름 (1)
+## OAuth 단계별 자세히
+3단계를 모두 설명하였습니다. 이제 전체적인 흐름을 자세히 보겠습니다.
+![payco Oauth 개발가이드](src/image-1.png)
 
-![OAuth 흐름 (1)](src/9.png)
+위 이미지를 보시면 우선 1~6이 사용자가 인증을 받고 코드를 발급받는 과정입니다.  
+- 1~3: 사용자가 클라이언트(우리 서비스)에서 "구글로 로그인"을 클릭할 것입니다.
+- 4: 사용자가 구글(Authorization Server)로 이동하여 로그인후 권한 동의를 할 것입니다.  
 
-### 단계 요약
-1. 사용자가 클라이언트 앱에서 로그인 요청  
-2. 인증 서버로 리다이렉트  
-3. 로그인 및 권한 동의 화면 표시  
-4. Authorization Code 발급  
-5. 클라이언트가 Code를 이용해 Access Token 요청  
-6. 발급받은 토큰으로 API 호출  
-
----
-
-## client ID와 redirect URL 검증
-
+### client ID와 redirect URL 검증
+여기서 구글 로그인 화면이 뜨기 전에 구글 서버에서는 클라이언트 아이디와 리다이렉트 URL을 검증합니다.
 ![client ID와 redirect URL 검증](src/11.png)
-
+구글은 다음을 확인합니다.
 - 사용자가 보낸 클라이언트 아이디와 리다이렉트 URI를 비교 확인한다.
 - 일치하면 코드 발급, 다르면 404 또는 동작 안함.
 
----
+로그인 페이지의 [URL](#예시url)은 누구나 알 수 있기 때문에, 해커가 redirect URL을 바꿔서 공격할 수도 있습니다.
+따라서 구글 서버에서는 미리 등록된 id, URL과 일치하는지 확인합니다.
+
+검증이 완료되면 5~6단계로 사용자가 코드를 발급받고, 리다이렉트 URL로 돌아오게 됩니다.
 
 ## 여기까지 진행했을 때 Resource Server가 알고 있는 것
-
 ![Resource Server가 아는 것](src/12.png)
+사용자가 코드까지 발급받았다면 Resource Server가 알고 있는 정보는 다음과 같습니다.
 
-1. **Client Id**: 연결된 클라이언트가 누구인지  
-2. **Client Secret**: 연결된 클라이언트의 비밀번호  
+1. **Client Id**: 연결된 서비스가 누구인지  
+2. **Client Secret**: 연결된 서비스의 비밀번호  
 3. **Redirect URL**: 통신할 통로  
 4. **User Id**: 연결된 사용자 정보  
 5. **Authorization Code**: 사용자에게 부여된 인가 코드  
 
-> 클라이언트는 코드뿐 아니라 1~4 정보를 함께 보내 토큰을 받아야 함.
+이제 우리 서비스가 구글에 코드를 보낼 차례입니다.  
+이 단계에서도 해커가 코드를 탈취하거나 우리 서버를 사칭 할 수 있기 때문에, 코드뿐만 아니라 1~4 정보를 함께 보내서 모두 일치해야 토큰을 발급합니다.
 
 ---
 
-## OAuth 흐름 (2)
+![payco Oauth 개발가이드](src/image-1.png)
 
-![OAuth 흐름 (2)](src/13.png)
 
-### 이어지는 과정
-5. 사용자가 로그인 확인 시 인가 코드 발급  
-6. 리다이렉트로 등록한 콜백 주소로 코드 전송  
-7. 클라이언트가 인가 코드 + 정보로 Authorization Server에 토큰 요청  
+### 위에서 설명한 과정이 7~8단계의 토큰을 발급받는 과정입니다
+7. 우리 서버가 인가 코드 + 서버의 정보로 구글(Authorization Server)에 토큰 요청  
+8. Authorization Server가 검증 후 Access Token 발급
 
 ---
 
-## 끝: 발급받은 Access Token으로 리소스 접근 가능
+## 토큰 발급이 끝나면?: Access Token으로 리소스 접근 가능
 
 ![Access Token 사용](src/14.png)
+이제 토큰까지 발급받았으면 끝입니다! 우리가 늘 하던 방식대로 API 서버(리소스 서버)에 접근하면 됩니다.  
 
-- 발급받은 Access Token을 통해 API 서버(리소스 서버)에 접근 가능  
-- Access Token 만료 시 **Refresh Token**으로 재발급 요청  
-
-> Refresh Token은 선택적으로 제공되며, Access Token 탈취에 대비해 보안성을 높인다.
+> 토큰 시간에 설명한 Refresh Token이 제공 될 수도 있습니다.  
+ 이 경우 만료 기간이 짧은 Access Token을 사용하고, 만료 시 **Refresh Token**으로 재발급을 요청합니다  
+Refresh Token은 발급여부, 기간이 회사마다 다르므로, 해당 서비스의 개발자 문서를 참고하시기 바랍니다.
 
 ---
 
 ## OAuth 2.0의 특징
-
+지금까지 설명한 내용은 OAuth 2.0 기준입니다. 현재 거의 대부분이 2.0으로 사용하기 때문에 OAuth특징이라 아셔도 무방합니다.
 ![OAuth 2.0의 특징](src/15.png)
 
-1. **Scope 설정 가능** — 접근 범위 제한 가능  
-2. **Bearer Token (=Access Token)** — 토큰 소유만으로 권한 인증 (TLS 필수)  
-3. **다양한 Grant Type 지원** — Authorization Code, Implicit, Password, Client Credentials 등  
-4. **역할 분리** — Authorization Server / Resource Server  
-5. **Refresh Token 지원** — Access Token 탈취 및 만료 문제 개선  
+1. **Scope 설정 가능**   
+위 사진처럼 이름,이메일 등 권한 범위를 설정가능합니다.
+2. **Bearer Token (=Access Token)**   
+우리가 배웠던 토큰방식을 의미합니다. 토큰 소유만으로 권한 인증이 가능하다는 것을 의미하고 탈취시 보안이 위험하기에 TLS(HTTPS)가 필수입니다.  
+3. **역할 분리**   
+제가 구글이라고 예시를 들었지만, Resource Server와 Authorization Server를 분리되어 있습니다.  
+우리가 api 서버와 인증 서버를 따로 운영하는 것과 비슷합니다.
+4. **Refresh Token 지원** — Access Token 탈취 및 만료 문제를 개선하였습니다. 
+5. **다양한 Grant Type 지원**   
+제가 설명한 Authorization Code Grant 방식만 알아두셔도 무방하니 이런게 있다는 것만 알아둡시다.
+- Authorization Code Grant (인가 코드 방식)  
+   - 제가 예시에서 설명했던 방식으로 가장 일반적으로 사용됩니다.  
+
+-  Implicit Grant (암묵적 방식)
+   - **SPA (Single Page Application)** 등 **브라우저 기반 클라이언트**에서 사용됩니다.  
+   - **Access Token이 직접 발급**되어, 인가 코드 단계를 생략합니다.  
+   - 현재는 **보안상의 이유로 거의 사용하지 않습니다**
 
 ---
 
-## 발표자용 요약
-
-| 구분 | 핵심 메시지 |
-|------|--------------|
-| 인증 vs 인가 | 401 vs 403의 개념 차이 |
-| 토큰 기반 인증 | 세션 없는 인증 방식, 보안 관리 중요 |
-| OAuth 등장 배경 | 비밀번호 없이 권한만 위임하는 표준 등장 |
-| OAuth 핵심 | 인가를 위한 프로토콜, 제3자 접근 제어 |
-| 구성요소 | 사용자, 앱, 인증서버, 리소스서버 |
-| 흐름 | 인증 → 코드 → 토큰 → 자원 접근 |
-| 실제 예시 | Google, Naver, GitHub 로그인 권한 위임 |
+- Resource Owner Password Credentials Grant (비밀번호 자격 증명 방식)
+   - **사용자의 아이디/비밀번호를 직접 입력받아** 액세스 토큰을 받는 방식입니다.  
+   - 사용자의 비밀번호를 앱이 직접 다루기 때문에 보안 위험이 높음.  
+   - **주로 신뢰할 수 있는 1st-party 앱에서만 사용**됩니다.  
 
 ---
 
-> Made by 주석 (컴퓨터공학 전공 발표)
+- Client Credentials Grant (클라이언트 자격 증명 방식)
+   - **사용자 개입 없이**, 클라이언트(우리 서버)가 스스로를 인증할 때 사용합니다.  
+   - **주로 서버 간 통신(Server-to-Server)** 에서 사용됩니다.  
+
+
+
+
+
+
