@@ -303,7 +303,7 @@ Session Ticket 사용
     - 다만 replay attack 위험이 있어 신중한 사용이 필요.
         - replay attack :
             - 공격자가 0-RTT 데이터(`ClientHello` + `Early Data`) 패킷을 중간에 가로챔
-            - 가로챈 패을 그대로 복사하여 서버에 여러 번 재전송
+            - 가로챈 패킷을 그대로 복사하여 서버에 여러 번 재전송
 
 ![image8.png](./img/image8.png)
 
