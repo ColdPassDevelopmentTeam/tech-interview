@@ -278,7 +278,7 @@ credentials 옵션에는 3개의 값이 존재하는데 아래와 같다.
 
 서버는 응답할 때 `Access-Control-Allow-Credentials` 라는 헤더를 `true`로 설정해줘야한다.
 
-이때, `Access-Control-Allow-Origin`은 와일드카드 = `‘*’가 될 수 없으며`, 명확한 origin 명시해줘야한다.
+이때, `Access-Control-Allow-Origin`은 와일드카드 = `‘*’가 될 수 없으며`, 명확한 origin 명시해줘야 한다.
 
 <br>
 
