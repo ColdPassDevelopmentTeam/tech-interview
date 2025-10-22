@@ -176,5 +176,5 @@ URL의 구성 요소는 아래 그림과 같다
 <br>
 
 - ❌ `포트`가 다른 경우:
-    - https://example.com:**8080**
+    - https://example.com: **8080**
     - https://example.com
