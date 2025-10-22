@@ -143,7 +143,7 @@ CORS가 동작하는 시나리오는 크게 `세 가지`로 나뉜다.
 2. 아래와 같은 **User-Agent** 헤더 또는 **CORS Safelisted** 헤더만 전송하고 이것들을 제외한 헤더를 사용하면 안된다.
     1. Accept, Accept-Language, Content-Language, Content-Type 
     2. DPR, Downlink, Save-Data, Viewport-Width, Width
-3. Content-Type 헤더는 다음 중 하나를 사용해야 합니다.
+3. Content-Type 헤더는 다음 중 하나를 사용해야 한다.
     1. **application/x-www-form-urlencoded, multipart/form-data, text/plain** 
 4. ReadableStream 개체를 사용하지 않는다.
 5. XMLHttpRequest.upload에 연결된 이벤트 리스너가 없다
