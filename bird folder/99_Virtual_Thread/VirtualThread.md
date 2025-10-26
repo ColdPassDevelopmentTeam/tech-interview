@@ -17,6 +17,7 @@
   - 하나의 CPU에서 여러 Thread를 번갈이 실행할 때, OS는 현재 Thread의 상태를 저장하고 다음 Thread의 상태를 불러오는 Context Switching을 수행함
   - Context Switching은 비용이 많이 드는 작업이라 잦은 전환은 성능 저하의 원인이 됨
 - Blocking I/O
+
   - Thread가 데이터베이스 조회나 API 호출과 같은 I/O 작업을 기다리는 동안, 해당 Thread는 아무 일도 하지 않으면서 OS Thread 자원을 계속 점유함
   - 작업을 처리하는 시간보다 대기하는 시간이 긴 경우가 발생하여 자원이 비효율적으로 사용됨
 
@@ -67,7 +68,7 @@
 
 - **지원 버전**
 
-  - JDK 19에서 얼리 엑세스로 포함됨 ([JEP 425: Virtual Threads (Preview)](https://openjdk.org/jeps/425))
+  - JDK 19에서 얼리 액세스로 포함됨 ([JEP 425: Virtual Threads (Preview)](https://openjdk.org/jeps/425))
   - JDK 21부터 정식으로 도입됨
 
 - **동작 원리**
@@ -120,7 +121,7 @@
 - **CPU 집약적인 작업에는 부적합**
   - I/O 대기 시간이 긴 작업에 적합하며, CPU 집약적인 장시간 실행 작업에는 적합하지 않음
 - **ThreadLocal 변수 사용 고려**
-  - 하나의 JVM이 수백만 개의 Virtual Thread를 지원할 수 있기에 `ThreadLocal` 변수의 과도한 사용한 메모리 누수와 성능 저하의 원인이 될 수 있음
+  - 하나의 JVM이 수백만 개의 Virtual Thread를 지원할 수 있기에 `ThreadLocal` 변수의 과도한 사용은 메모리 누수와 성능 저하의 원인이 될 수 있음
 - **Thread Pooling의 비효율성**
   - 경량화되어 있는 Virtual Thread는 Thread Pooling 보다 매번 새로운 인스턴스를 생성하는 것을 권장함
 
@@ -158,7 +159,7 @@ Thread.startVirtualThread(() -> {
   System.out.println("Hello Virtual Thread");
 })
 
-Runnable runnable = () => System.out.println("Hi Virtual Thread");
+Runnable runnable = () -> System.out.println("Hi Virtual Thread");
 Thread virtualThread1 = Thread.ofVirtual().start(runnable);
 
 Thread.Builder builder = Thread.ofVirtual().name("JVM-Thread");
@@ -170,6 +171,5 @@ Thread virtualThread2 = builder.start(runnable);
 - https://nangmandeveloper.tistory.com/6
 - https://www.youtube.com/watch?v=vQP6Rs-ywlQ
 - https://techblog.woowahan.com/15398/
-- https://jofestudio.tistory.com/139
 - https://dzone.com/articles/how-reactive-thread-works-part-2
 - https://jofestudio.tistory.com/139
