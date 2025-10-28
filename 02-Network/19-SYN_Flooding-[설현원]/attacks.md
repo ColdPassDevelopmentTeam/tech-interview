@@ -9,15 +9,20 @@
 |:-----------|:------|:-----------|
 
 | \*\*Scanning\*\* | 공격 전 단계에서 서비스 포트, OS, 취약점을 탐색 | SYN / Connect / UDP / FIN / XMAS 등 다양한 스캔 방식 |
+![](img/src/11.png)
 
 | \*\*Sniffing\*\* | 네트워크 패킷을 감청·수집·분석 | 평문 데이터(HTTP, DNS, 쿠키 등) 노출, TAP·미러링 이용 |
+![](img/src/12.png)
 
 | \*\*Spoofing\*\* | 송신자 정보(IP/ARP/DNS 등)를 위조 | 출처 위조로 추적 회피, 반사형 공격 유발 |
+![](img/src/13.png)
 
 | \*\*Hijacking\*\* | 세션·트래픽·경로를 탈취 또는 우회 | BGP / DNS / OAuth 토큰 등 하이재킹 유형 다양 |
 
+![](img/src/14.png)
 | \*\*Smurfing\*\* | 브로드캐스트 응답을 이용한 증폭형 DDoS | 출발지 IP 위조 + 브로드캐스트 응답 집중 |
 
+![](img/src/15.png)
 | \*\*Amplification / Reflection\*\* | 작은 요청으로 큰 응답을 유도하여 반사 | DNS, NTP, SSDP, Memcached 등 고증폭률 서비스 악용 |
 
 | \*\*Man-in-the-Middle (MITM)\*\* | 통신 중간에서 패킷을 가로채거나 변조 | ARP 스푸핑, 악성 AP, TLS 중간자 공격 등 |
