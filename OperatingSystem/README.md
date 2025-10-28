@@ -94,7 +94,7 @@ Context Switch는 크게 두 가지 경우에 발생합니다.
 
 ![7](src/7.png)
 
-Context Switch가 발생하면 다음과 같은 작업들이 진행됩니다
+Context Switch가 발생하면 다음과 같은 작업들이 진행됩니다.
 
 1.  **레지스터 저장 및 복원 (PCB):** 현재 실행 중이던 프로세스의 상태(CPU 레지스터 값 등)를 저장하고, 다음 프로세스의 상태를 로드하여 레지스터에 복원합니다.  
     (참고: PCB(Process Control Block)에 저장합니다)
