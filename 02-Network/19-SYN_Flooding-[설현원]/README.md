@@ -11,7 +11,7 @@ TCP의 **3-Way Handshake 과정의 취약점**을 악용해 서버의 연결 대
 ### 1. Flooding(플러딩) 개념
 - 플러딩은 **단기간에 대량의 요청이나 트래픽을 전송**하여 서버·네트워크·서비스의 자원을 소모시키는 행위.
 - DoS(Denial of Service)의 대표적인 형태로, **의도적 공격** 혹은 **시스템 오류로 인한 과부하**로 발생할 수 있음.
-
+![](img/src/2.pngstructure.png)
 ---
 
 ### 2. SYN Flooding의 원리
@@ -28,7 +28,9 @@ TCP의 **3-Way Handshake 과정의 취약점**을 악용해 서버의 연결 대
 ### A. 네트워크 / 전송 계층 플러딩
 
 1. **SYN Flood (TCP SYN Flood)**  
+
    - **설명:** TCP 3-way-handshake의 첫 단계인 `SYN`만 대량 전송하여 서버의 half-open(미완성) 연결을 쌓아 `SYN 큐`를 포화시킴. 서버는 `SYN+ACK`를 보내고 `ACK`를 기다리며 자원(메모리, 소켓)을 점유당함.  
+   
    - **영향:** 정상 클라이언트의 연결 허용 수 감소, 서비스 접속 실패.  
    - **특징:** 비교적 적은 트래픽으로 큰 영향을 줄 수 있음.
 
@@ -64,6 +66,7 @@ TCP의 **3-Way Handshake 과정의 취약점**을 악용해 서버의 연결 대
 
 
 ### 3. 서버의 상태와 큐 구조
+![](img/src/6.png)
 - **SYN 큐 (incomplete queue)**: SYN을 받은 후 ACK를 기다리는 연결 대기 상태 저장.
 - **ACCEPT 큐 (completed queue)**: 3-Way Handshake가 완료된 연결 저장.
 - SYN 큐가 가득 차면 새로운 연결 요청이 **지연되거나 거부(drop)**됨.
