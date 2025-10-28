@@ -4,15 +4,15 @@
 > - **Last Update Date** : 2025-10-21 Tue
 
 ## 목차
-1. [모놀리스 아키텍처](./Monolith.md)
-2. [모듈러 모놀리스 아키텍처](./ModularMonolith.md)
-3. [마이크로서비스 아키텍처](./MicroservicesArchitecture.md)
-4. [모놀리스 vs 마이크로서비스 비교](#-1.-모놀리스-아키텍처-vs-모듈러-모놀리스-vs-MSA)
-5. [무엇을 선택해야 하는가?](#-무엇을-선택해야-하는가?)
+1. [MSA 개요](#-msa-개요)
+    1. [모놀리스 vs 마이크로서비스 비교](#-1.-모놀리스-아키텍처-vs-모듈러-모놀리스-vs-MSA)
+    2. [무엇을 선택해야 하는가?](#2.-무엇을-선택해야-하는가?)
+2. [모놀리스 아키텍처](./Monolith.md)
+3. [모듈러 모놀리스 아키텍처](./ModularMonolith.md)
+4. [마이크로서비스 아키텍처](./MicroservicesArchitecture.md)
+
 
 ## 1. 모놀리스 아키텍처 vs 모듈러 모놀리스 vs MSA
-
-
 
 | 특징 | 모놀리스 아키텍처 (Monolithic) | 모듈러 모놀리스(ModularMonolith) | 마이크로서비스 아키텍처 (Microservices) |
 | :--- | :--- | :--- | :--- |
