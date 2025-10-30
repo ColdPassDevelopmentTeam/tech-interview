@@ -190,7 +190,7 @@
 </details>
 
 
-
+<details>
 <summary><h3>트랜잭션의 ACID를  설명해 주세요.</h3></summary>
 - Atomicity(원자성)  
 트랜잭션은 모두 수행되거나 모두 수행되지 않아야 합니다.
