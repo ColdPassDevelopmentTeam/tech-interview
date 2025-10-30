@@ -97,3 +97,40 @@
     
     </details>
 </details>
+
+
+
+<details>
+<summary>더티 리딩이 무엇이고 왜 이것이 문제가 되나요?</summary>
+
+<br>
+
+- 커밋되지 않은 데이터를 다른 트랜잭션이 읽는 현상입니다. 롤백 시 잘못된 데이터를 참조하게 되어 데이터 일관성이 깨집니다.
+
+    <details>
+    <summary>꼬리질문 : 더티 리딩을 방지하기 위해선 어떻게 해야하나요?</summary>
+    
+    <br>
+
+    - READ COMMITTED 이상의 격리 수준을 사용하거나, 잠금(Lock)으로 커밋 전 데이터 접근을 막습니다.
+    
+    </details>
+</details>
+
+
+
+<details>
+<summary>만약 현재 S-LOCK으로 트랜잭션을 진행중, X-LOCK 의 쓰기요청이 들어온다면 허용이 될까요?</summary>
+
+<br>
+
+- 허용되지 않습니다. S-LOCK은 읽기 전용이기 때문에 쓰기(X-LOCK) 요청은 대기 상태에 들어갑니다.
+
+    <details>
+    <summary>꼬리질문 : 낙관적 LOCK 과 비관적 LOCK에 대해 설명이 가능한가요?</summary>
+    
+    <br>
+
+    - 낙관적은 충돌이 드물다고 가정하고 커밋 시점에 검증, 비관적은 처음부터 락을 걸어 충돌을 방지합니다.
+    </details>
+</details>
